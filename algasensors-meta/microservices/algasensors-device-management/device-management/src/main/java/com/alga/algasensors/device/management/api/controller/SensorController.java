@@ -55,8 +55,12 @@ public class SensorController {
 
     @GetMapping("{sensorId}")
     public SensorOutput getOne(@PathVariable TSID sensorId) {
-        Sensor sensor = repository.findById(new SensorId(sensorId)).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        Sensor sensor = getSensorOrElseNotFound(sensorId);
         return convert(sensor);
+    }
+
+    private Sensor getSensorOrElseNotFound(TSID sensorId) {
+        return repository.findById(new SensorId(sensorId)).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping
@@ -67,6 +71,49 @@ public class SensorController {
 
     }
 
+    @PutMapping("{sensorId}")
+    public SensorOutput update(@PathVariable TSID sensorId, @RequestBody SensorInput input) {
+        Sensor sensor = getSensorOrElseNotFound(sensorId);
+        Sensor.builder()
+                .id(new SensorId(sensorId))
+                .name(input.getName())
+                .ip(input.getIp())
+                .location(input.getLocation())
+                .model(input.getModel())
+                .enable(input.getEnable())
+                .protocol(input.getProtocol())
+                .build();
+        repository.saveAndFlush(sensor);
+        return convert(sensor);
+    }
+
+    @DeleteMapping("{sensorId}")
+    public void delete(@PathVariable TSID sensorId) {
+        Sensor sensor = getSensorOrElseNotFound(sensorId);
+        repository.delete(sensor);
+    }
+
+    @PutMapping("/{sensorId}/enable")
+    public SensorOutput enableSensor(@PathVariable TSID sensorId) {
+        Sensor sensor = getSensorOrElseNotFound(sensorId);
+        sensor.setEnable(Boolean.TRUE);
+
+        Sensor save = repository.save(sensor);
+
+        return convert(save);
+
+    }
+
+    @DeleteMapping("/{sensorId}/enable")
+    public SensorOutput disableSensor(@PathVariable TSID sensorId) {
+        Sensor sensor = getSensorOrElseNotFound(sensorId);
+        sensor.setEnable(Boolean.FALSE);
+
+        Sensor save = repository.save(sensor);
+
+        return convert(save);
+
+    }
 
 
 }

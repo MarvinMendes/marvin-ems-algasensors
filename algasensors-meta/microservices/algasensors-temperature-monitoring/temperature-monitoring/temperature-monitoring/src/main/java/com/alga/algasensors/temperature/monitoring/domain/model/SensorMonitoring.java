@@ -1,0 +1,32 @@
+package com.alga.algasensors.temperature.monitoring.domain.model;
+
+import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.OffsetDateTime;
+import java.util.function.BinaryOperator;
+
+@Data
+@Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class SensoMonitoring {
+
+    @Id
+    @AttributeOverride(name = "value", column = @Column(name = "id", columnDefinition = "bigint"))
+    private SensorId id;
+
+    private Double lastTemperature;
+    private OffsetDateTime updateAt;
+    private Boolean enabled;
+
+
+
+}

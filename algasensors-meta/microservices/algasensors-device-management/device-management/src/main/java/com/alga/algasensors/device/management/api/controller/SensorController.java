@@ -1,6 +1,7 @@
 package com.alga.algasensors.device.management.api.controller;
 
 import com.alga.algasensors.device.management.api.model.SensorInput;
+import com.alga.algasensors.device.management.api.model.SensorOutput;
 import com.alga.algasensors.device.management.common.IdGenerator;
 import com.alga.algasensors.device.management.domain.model.Sensor;
 import com.alga.algasensors.device.management.domain.model.SensorId;
@@ -18,7 +19,7 @@ public class SensorController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Sensor create(@RequestBody SensorInput input) {
+    public SensorOutput create(@RequestBody SensorInput input) {
         Sensor sensor = Sensor.builder()
                 .id(new SensorId(IdGenerator.generateTSID()))
                 .name(input.getName())
@@ -28,8 +29,16 @@ public class SensorController {
                 .model(input.getModel())
                 .enable(false)
                 .build();
-
-        return repository.saveAndFlush(sensor);
+        repository.saveAndFlush(sensor);
+        return SensorOutput.builder()
+                .id(sensor.getId().getSensorId())
+                .name(sensor.getName())
+                .ip(sensor.getIp())
+                .location(sensor.getLocation())
+                .model(sensor.getModel())
+                .protocol(sensor.getProtocol())
+                .enable(sensor.getEnable())
+                .build();
     }
 
 }

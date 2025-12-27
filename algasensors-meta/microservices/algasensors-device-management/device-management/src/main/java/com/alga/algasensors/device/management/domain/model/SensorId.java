@@ -1,0 +1,38 @@
+package com.alga.algasensors.device.management.domain.model;
+
+import io.hypersistence.tsid.TSID;
+import jakarta.persistence.Embeddable;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
+import java.util.Objects;
+
+@Getter
+@Embeddable
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class SensorId implements Serializable {
+
+    private TSID sensorId;
+
+    public SensorId(TSID value) {
+        Objects.requireNonNull(value);
+        this.sensorId = value;
+    }
+
+    public SensorId(Long value) {
+        Objects.requireNonNull(value);
+        this.sensorId = TSID.from(value);
+    }
+
+    public SensorId(String value) {
+        Objects.requireNonNull(value);
+        this.sensorId = TSID.from(value);
+    }
+
+    @Override
+    public String toString() {
+        return sensorId.toString();
+    }
+}

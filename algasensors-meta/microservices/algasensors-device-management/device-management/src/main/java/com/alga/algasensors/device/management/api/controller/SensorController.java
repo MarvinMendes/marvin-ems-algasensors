@@ -3,18 +3,24 @@ package com.alga.algasensors.device.management.api.controller;
 import com.alga.algasensors.device.management.api.model.SensorInput;
 import com.alga.algasensors.device.management.common.IdGenerator;
 import com.alga.algasensors.device.management.domain.model.Sensor;
+import com.alga.algasensors.device.management.domain.model.SensorId;
+import com.alga.algasensors.device.management.domain.repository.SensorRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/sensors")
 public class SensorController {
+
+    private final SensorRepository repository;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Sensor create(@RequestBody SensorInput input) {
-        return Sensor.builder()
-                .id(IdGenerator.generateTSID())
+        Sensor sensor = Sensor.builder()
+                .id(new SensorId(IdGenerator.generateTSID()))
                 .name(input.getName())
                 .ip(input.getIp())
                 .location(input.getLocation())
@@ -22,6 +28,8 @@ public class SensorController {
                 .model(input.getModel())
                 .enable(false)
                 .build();
+
+        return repository.saveAndFlush(sensor);
     }
 
 }

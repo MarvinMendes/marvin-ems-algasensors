@@ -1,6 +1,8 @@
 package com.alga.algasensors.device.management.domain.model;
 
-import io.hypersistence.tsid.TSID;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,9 +12,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Entity
 public class Sensor {
 
-    private TSID id;
+    @Id
+    @Column(columnDefinition = "BIGINT", name = "sensorId")
+    private SensorId id;
     private String name;
     private String ip;
     private String location;

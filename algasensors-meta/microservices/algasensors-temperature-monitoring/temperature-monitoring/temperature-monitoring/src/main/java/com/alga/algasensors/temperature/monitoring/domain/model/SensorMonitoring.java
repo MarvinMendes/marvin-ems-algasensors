@@ -10,14 +10,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.OffsetDateTime;
-import java.util.function.BinaryOperator;
 
 @Data
 @Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SensoMonitoring {
+public class SensorMonitoring {
 
     @Id
     @AttributeOverride(name = "value", column = @Column(name = "id", columnDefinition = "bigint"))

@@ -1,6 +1,7 @@
 plugins {
+	id 'idea'
 	id 'java'
-	id 'org.springframework.boot' version '4.0.1'
+	id 'org.springframework.boot' version '3.4.3'
 	id 'io.spring.dependency-management' version '1.1.7'
 }
 
@@ -13,10 +14,19 @@ java {
 		languageVersion = JavaLanguageVersion.of(21)
 	}
 }
+// MODO NOVO (Correção)
+def javaExtension = project.extensions.getByType(JavaPluginExtension)
 
 configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
+	}
+}
+
+idea {
+	module {
+		downloadJavadoc = true
+		downloadSources = true
 	}
 }
 
@@ -25,11 +35,15 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	implementation 'org.apache.commons:commons-lang3:3.17.0'
+	implementation 'com.fasterxml.uuid:java-uuid-generator:5.1.0'
+	implementation 'io.hypersistence:hypersistence-tsid:2.1.4'
+	implementation 'org.springframework.boot:spring-boot-starter-amqp:3.4.4'
 }
 
 tasks.named('test') {

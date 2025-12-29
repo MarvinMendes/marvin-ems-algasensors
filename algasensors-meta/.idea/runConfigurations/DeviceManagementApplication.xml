@@ -1,11 +1,11 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="DeviceManagementApplication" type="Application" factoryName="Application" nameIsGenerated="true">
-    <option name="MAIN_CLASS_NAME" value="com.alga.algasensors.device.management.DeviceManagementApplication" />
+    <option name="MAIN_CLASS_NAME" value="com.alga.algasensors.device.DeviceManagementApplication" />
     <module name="device-management.main" />
     <option name="VM_PARAMETERS" value="-XX:MaxRAM=256m" />
     <extension name="coverage">
       <pattern>
-        <option name="PATTERN" value="com.alga.algasensors.device.management.*" />
+        <option name="PATTERN" value="com.alga.algasensors.device.*" />
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>

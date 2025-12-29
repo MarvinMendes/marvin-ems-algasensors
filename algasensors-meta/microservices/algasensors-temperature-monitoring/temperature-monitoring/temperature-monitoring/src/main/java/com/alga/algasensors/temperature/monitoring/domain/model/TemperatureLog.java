@@ -13,7 +13,7 @@ import java.time.OffsetDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Temperature {
+public class TemperatureLog {
 
     @Id
     @AttributeOverride(name = "value", column = @Column(name = "id", columnDefinition = "bigint"))

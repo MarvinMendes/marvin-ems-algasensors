@@ -1,6 +1,9 @@
 package com.alga.algasensors.device.management.api.controller;
 
+import com.alga.algasensors.device.management.api.client.SensorMonitoringClient;
+import com.alga.algasensors.device.management.api.model.SensorDetailOutput;
 import com.alga.algasensors.device.management.api.model.SensorInput;
+import com.alga.algasensors.device.management.api.model.SensorMonitoringOutput;
 import com.alga.algasensors.device.management.api.model.SensorOutput;
 import com.alga.algasensors.device.management.common.IdGenerator;
 import com.alga.algasensors.device.management.domain.model.Sensor;
@@ -24,6 +27,8 @@ import java.util.List;
 public class SensorController {
 
     private final SensorRepository repository;
+
+    private final SensorMonitoringClient sensorMonitoringClient;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -59,6 +64,19 @@ public class SensorController {
         return convert(sensor);
     }
 
+    @GetMapping("{sensorId}/detail")
+    public SensorDetailOutput getOneWithDetail(@PathVariable TSID sensorId) {
+        Sensor sensor = getSensorOrElseNotFound(sensorId);
+
+        SensorMonitoringOutput detail = sensorMonitoringClient.getDetail(sensorId);
+        SensorOutput sensorOutput = convert(sensor);
+
+        return SensorDetailOutput.builder()
+                .sensor(sensorOutput)
+                .monitoring(detail)
+                .build();
+    }
+
     private Sensor getSensorOrElseNotFound(TSID sensorId) {
         return repository.findById(new SensorId(sensorId)).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
@@ -91,6 +109,9 @@ public class SensorController {
     public void delete(@PathVariable TSID sensorId) {
         Sensor sensor = getSensorOrElseNotFound(sensorId);
         repository.delete(sensor);
+
+        sensorMonitoringClient.disableMonitoring(sensorId);
+
     }
 
     @PutMapping("/{sensorId}/enable")
@@ -99,6 +120,8 @@ public class SensorController {
         sensor.setEnable(Boolean.TRUE);
 
         Sensor save = repository.save(sensor);
+
+        sensorMonitoringClient.enableMonitoring(sensorId);
 
         return convert(save);
 

@@ -16,7 +16,7 @@ import java.time.OffsetDateTime;
 public class TemperatureLog {
 
     @Id
-    @AttributeOverride(name = "value", column = @Column(name = "id", columnDefinition = "bigint"))
+    @AttributeOverride(name = "value", column = @Column(name = "id", columnDefinition = "uuid"))
     private TemperatureLogId id;
 
     @Column(name = "\"value\"")

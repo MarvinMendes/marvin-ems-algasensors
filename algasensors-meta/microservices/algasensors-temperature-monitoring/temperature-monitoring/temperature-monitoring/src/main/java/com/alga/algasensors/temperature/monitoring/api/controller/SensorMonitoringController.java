@@ -29,10 +29,11 @@ public class SensorMonitoringController {
                 .build();
     }
 
-    private SensorMonitoring findById(TSID sensorId) {
+    
+    private SensorMonitoring findById(@PathVariable TSID sensorId) {
         return repository.findById(new SensorId(sensorId)).orElse(SensorMonitoring.builder()
                 .id(new SensorId(sensorId))
-                .enabled(false)
+                .enabled(true)
                 .lastTemperature(null)
                 .updateAt(null)
                 .build());

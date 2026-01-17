@@ -5,6 +5,7 @@ spring:
     username: rabbitmq
     password: rabbitmq
 
+
   application.name: temperature-processing
 server:
   port: 8081
